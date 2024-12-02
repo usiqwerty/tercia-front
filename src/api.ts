@@ -14,9 +14,7 @@ export type Lesson = {
 };
 // Define API server address
 export const API_SERVER = "http://130.193.58.142:8000";
-axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-axios.defaults.headers.patch['Access-Control-Allow-Origin'] = '*';
+
 export async function getCourses() {
     return await axios.get<Course[]>(`${API_SERVER}/get-courses`, {
         headers: {"Content-Type": "application/json"},

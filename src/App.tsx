@@ -29,8 +29,8 @@ function App() {
 
                 <CourseEditor selectedCourse={selectedCourse} setError={setError} setLoading={setLoading}
                               setSelectedCourse={setSelectedCourse}/>
-                <LessonEditor lesson={selectedLesson} setError={setError} setLoading={setLoading}/>
                 <LessonList lessons={lessons} selectedLesson={selectedLesson} selectLesson={async id => setSelectedLesson((await getLesson(id)).data)}/>
+                <LessonEditor lesson={selectedLesson} setError={setError} setLoading={setLoading}/>
             </div>
         </>
 

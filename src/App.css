@@ -1,10 +1,38 @@
-#editor-container{
-  display: flex;
-}
-.editor-block{
-  border: 1px solid black;
-  display: grid;
-}
-.lesson-list{
+#editor-container {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    flex-wrap: wrap;
+    gap: 10px;
 
+}
+
+.editor-block {
+    border: 1px solid black;
+    display: grid;
+    padding: 5px;
+}
+
+label.doule-row {
+    display: grid;
+}
+
+input {
+    margin: 3px;
+}
+
+#course-editor {
+    flex-grow: 2;
+    width: 400px
+}
+
+#lesson-editor {
+    flex-grow: 3;
+    width: 500px
+}
+
+.lesson-list {
+    flex-grow: 1;
+    width: 300px
 }

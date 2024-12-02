@@ -56,7 +56,7 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
     };
 
 
-    return <div className={"editor-block"}>
+    return <div className={"editor-block"} id={"course-editor"}>
         <h2>Информация о курсе</h2>
         <select onChange={handleCourseSelected}
                 value={selectedCourse?.id || ""}>
@@ -71,7 +71,7 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
         </select>
 
 
-        <label>
+        <label className={"doule-row"}>
             Название:
 
             <input
@@ -83,7 +83,7 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
             />
         </label>
 
-        <label>
+        <label className={"doule-row"}>
             URL обложки:
 
             <input

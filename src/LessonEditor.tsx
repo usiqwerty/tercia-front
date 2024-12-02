@@ -33,15 +33,15 @@ export default function LessonEditor({lesson, setError, setLoading}: { lesson: L
 
     }, [videoUrl]);
 
-    return <div className={"editor-block"}>
+    return <div className={"editor-block"} id={"lesson-editor"}>
         <h2>{lessonTitle}</h2>
-        <label>
+        <label className={"doule-row"}>
             Тема урока <input name={"title"}
                               onChange={e => setLessonTitle(e.target.value)}
                               disabled={!lesson}
                               value={lessonTitle}/>
         </label>
-        <label>
+        <label className={"doule-row"}>
             Ссылка на ВК видео
 
             <input placeholder={'https://vk.com/video-227293370_456239078'}
@@ -53,7 +53,7 @@ export default function LessonEditor({lesson, setError, setLoading}: { lesson: L
                 Указать ссылку на плеер вручную
                 <input type={"checkbox"} onChange={e=>setManualPlayerUrl(e.target.checked)}></input>
             </label><br/>
-            <label>
+            <label className={"doule-row"}>
                 Ссылка на плеер <input name={"video-url"}
                                        onChange={e => setPlayerUrl(e.target.value)}
                                        disabled={!manualPlayerUrl || !lesson}

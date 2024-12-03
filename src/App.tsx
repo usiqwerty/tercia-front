@@ -22,15 +22,19 @@ function App() {
     return (
         <>
             <h1>Редактор курсов</h1>
+            {error && <p style={{color: "red"}}>{error}</p>}
+            {loading && <p>Загрузка...</p>}
             <div id={'editor-container'}>
-
-                {error && <p style={{color: "red"}}>{error}</p>}
-                {loading && <p>Загрузка...</p>}
-
-                <CourseEditor selectedCourse={selectedCourse} setError={setError} setLoading={setLoading}
+                <CourseEditor selectedCourse={selectedCourse}
+                              setError={setError}
+                              setLoading={setLoading}
                               setSelectedCourse={setSelectedCourse}/>
-                <LessonList lessons={lessons} selectedLesson={selectedLesson} selectLesson={async id => setSelectedLesson((await getLesson(id)).data)}/>
-                <LessonEditor lesson={selectedLesson} setError={setError} setLoading={setLoading}/>
+                <LessonList lessons={lessons}
+                            selectedLesson={selectedLesson}
+                            selectLesson={async id => setSelectedLesson((await getLesson(id)).data)}/>
+                <LessonEditor lesson={selectedLesson}
+                              setError={setError}
+                              setLoading={setLoading}/>
             </div>
         </>
 

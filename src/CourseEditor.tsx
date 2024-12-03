@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {Course, getCourses, patchCourses} from "./api";
+import {Course, createCourse, deleteCourse, getCourses, patchCourses} from "./api";
 
 export default function CourseEditor({selectedCourse, setLoading, setError, setSelectedCourse}:
-                                         { selectedCourse: Course | null, setLoading: (a: boolean) => void, setError: (a: string | null) => void, setSelectedCourse: (a: Course | null) => void }) {
+                                         {
+                                             selectedCourse: Course | null,
+                                             setLoading: (a: boolean) => void,
+                                             setError: (a: string | null) => void,
+                                             setSelectedCourse: (a: Course | null) => void
+                                         }) {
     const [courses, setCourses] = useState([] as Course[]);
     const [formData, setFormData] = useState({
         name: "",
@@ -55,9 +60,24 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
             });
     };
 
-
+    async function onCreateCourse(e: React.MouseEvent) {
+        await createCourse();
+        await fetchCourses();
+        setSelectedCourse(null);
+    }
+    async function onDeleteCourse(e: React.MouseEvent){
+        if (selectedCourse == null)
+            return;
+        await deleteCourse(selectedCourse.id);
+        await fetchCourses();
+        setSelectedCourse(null);
+    }
     return <div className={"editor-block"} id={"course-editor"}>
         <h2>Информация о курсе</h2>
+        <div>
+            <button onClick={onCreateCourse}>Создать курс</button>
+            <button onClick={onDeleteCourse} disabled={!selectedCourse}>Удалить курс</button>
+        </div>
         <select onChange={handleCourseSelected}
                 value={selectedCourse?.id || ""}>
             <option value="" disabled>

@@ -5,7 +5,7 @@ export default function LessonList({lessons, selectLesson, selectedLesson}: { le
     return <div className={"editor-block lesson-list"}>
         <h2>Список уроков</h2>
         {lessons.map(lesson =>
-            <div>
+            <div key={lesson.id}>
                 <button onClick={e => selectLesson(lesson.id)}
                         disabled={lesson.id === selectedLesson?.id}>{lesson.title}</button>
                 <button disabled>{"/\\"}</button>

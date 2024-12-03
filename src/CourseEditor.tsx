@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Course, createCourse, deleteCourse, getCourses, patchCourses} from "./api";
+import {Course, createCourse, createLesson, deleteCourse, getCourses, patchCourses} from "./api";
 
 export default function CourseEditor({selectedCourse, setLoading, setError, setSelectedCourse}:
                                          {
@@ -72,6 +72,7 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
         await fetchCourses();
         setSelectedCourse(null);
     }
+
     return <div className={"editor-block"} id={"course-editor"}>
         <h2>Информация о курсе</h2>
         <div>

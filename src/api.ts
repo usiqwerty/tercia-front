@@ -10,13 +10,19 @@ export type Lesson = {
     title: string;
     video_url: string;
     id: number;
-    couse_id: number;
+    course_id: number;
+    number: number;
 };
 // Define API server address
 export const API_SERVER = "http://130.193.58.142:8000";
 
 export async function createCourse(){
-    return await axios.post<Course[]>(`${API_SERVER}/add-course`, {name: "Новый курс", cover_url: "", id: 0},{
+    return await axios.post(`${API_SERVER}/add-course`, {name: "Новый курс", cover_url: "", id: 0},{
+        headers: {"Content-Type": "application/json"},
+    });
+}
+export async function createLesson(lesson: Lesson){
+    return await axios.post(`${API_SERVER}/add-lesson`, lesson,{
         headers: {"Content-Type": "application/json"},
     });
 }

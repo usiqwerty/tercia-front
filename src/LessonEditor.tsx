@@ -1,7 +1,12 @@
 import {Course, getCourses, getLesson, Lesson, patchLesson} from "./api";
 import React, {useEffect, useState} from "react";
 
-export default function LessonEditor({lesson, setError, setLoading}: { lesson: Lesson | null, setError: (a: string | null) => void, setLoading: (a: boolean) => void }) {
+export default function LessonEditor({lesson, setError, setLoading, fetchLessons}: {
+    lesson: Lesson | null,
+    setError: (a: string | null) => void,
+    setLoading: (a: boolean) => void,
+    fetchLessons: () => void
+}) {
     const [lessonTitle, setLessonTitle] = useState("");
     const [playerUrl, setPlayerUrl] = useState("");
     const [videoUrl, setVideoUrl] = useState("");
@@ -13,7 +18,14 @@ export default function LessonEditor({lesson, setError, setLoading}: { lesson: L
 
     function save() {
         if (lesson != null)
-            patchLesson({id: lesson.id, title: lessonTitle, video_url: playerUrl, couse_id: lesson.couse_id});
+            patchLesson({
+                id: lesson.id,
+                title: lessonTitle,
+                video_url: playerUrl,
+                course_id: lesson.course_id,
+                number: lesson.number
+            });
+        fetchLessons();
     }
 
     useEffect(() => {
@@ -45,13 +57,13 @@ export default function LessonEditor({lesson, setError, setLoading}: { lesson: L
             Ссылка на ВК видео
 
             <input placeholder={'https://vk.com/video-227293370_456239078'}
-            onChange={e=>setVideoUrl(e.target.value)}/>
+                   onChange={e => setVideoUrl(e.target.value)}/>
         </label>
         <details>
             <summary>Плеер</summary>
             <label>
                 Указать ссылку на плеер вручную
-                <input type={"checkbox"} onChange={e=>setManualPlayerUrl(e.target.checked)}></input>
+                <input type={"checkbox"} onChange={e => setManualPlayerUrl(e.target.checked)}></input>
             </label><br/>
             <label className={"doule-row"}>
                 Ссылка на плеер <input name={"video-url"}

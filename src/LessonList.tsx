@@ -1,6 +1,11 @@
-import {Lesson} from "./api";
+import {createLesson, Lesson} from "./api";
 
-export default function LessonList({lessons, selectLesson, selectedLesson}: { lessons: Lesson[], selectLesson: (a: number) => void, selectedLesson: Lesson|null }) {
+export default function LessonList({lessons, selectLesson, selectedLesson, onCreateLesson}: {
+    lessons: Lesson[],
+    selectLesson: (a: number) => void,
+    selectedLesson: Lesson | null,
+    onCreateLesson: () => void
+}) {
 
     return <div className={"editor-block lesson-list"}>
         <h2>Список уроков</h2>
@@ -12,5 +17,6 @@ export default function LessonList({lessons, selectLesson, selectedLesson}: { le
                 <button disabled>{"\\/"}</button>
             </div>
         )}
+        <button onClick={(e)=>onCreateLesson()}>Добавить урок</button>
     </div>
 }

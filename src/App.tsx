@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Course, getCourseLessons, getCourses, getLesson, Lesson, patchCourses} from "./api";
+import {Course, createLesson, getCourseLessons, getCourses, getLesson, Lesson, patchCourses} from "./api";
 import CourseEditor from "./CourseEditor";
 import LessonEditor from "./LessonEditor";
 import "./App.css";
@@ -16,9 +16,26 @@ function App() {
         if (selectedCourse != null)
             setLessons((await getCourseLessons(selectedCourse.id)).data)
     }
+
     useEffect(() => {
         fetchLessons();
     }, [selectedCourse]);
+
+    async function onCreateLesson() {
+        if (selectedCourse == null)
+            return;
+
+        let lesson = {
+            title: "Новый урок",
+            video_url: "",
+            id: 0,
+            course_id: selectedCourse.id,
+            number: lessons.length + 1
+        };
+        await createLesson(lesson);
+        await fetchLessons()
+    }
+
     return (
         <>
             <h1>Редактор курсов</h1>
@@ -31,10 +48,12 @@ function App() {
                               setSelectedCourse={setSelectedCourse}/>
                 <LessonList lessons={lessons}
                             selectedLesson={selectedLesson}
-                            selectLesson={async id => setSelectedLesson((await getLesson(id)).data)}/>
+                            selectLesson={async id => setSelectedLesson((await getLesson(id)).data)}
+                            onCreateLesson={onCreateLesson}/>
                 <LessonEditor lesson={selectedLesson}
                               setError={setError}
-                              setLoading={setLoading}/>
+                              setLoading={setLoading}
+                              fetchLessons={fetchLessons}/>
             </div>
         </>
 

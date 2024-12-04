@@ -49,7 +49,9 @@ function App() {
                 <LessonList lessons={lessons}
                             selectedLesson={selectedLesson}
                             selectLesson={async id => setSelectedLesson((await getLesson(id)).data)}
-                            onCreateLesson={onCreateLesson}/>
+                            onCreateLesson={onCreateLesson}
+                            setLessons={setLessons}
+                            courseId={selectedCourse?.id || null}/>
                 <LessonEditor lesson={selectedLesson}
                               setError={setError}
                               setLoading={setLoading}

@@ -11,6 +11,7 @@ export default function LessonEditor({lesson, setError, setLoading, fetchLessons
     const [playerUrl, setPlayerUrl] = useState("");
     const [videoUrl, setVideoUrl] = useState("");
     const [manualPlayerUrl, setManualPlayerUrl] = useState(false);
+    const [hasChanged, setHasChanged] = useState(false);
     useEffect(() => {
         setLessonTitle(lesson?.title || "");
         setPlayerUrl(lesson?.video_url || "");
@@ -26,6 +27,7 @@ export default function LessonEditor({lesson, setError, setLoading, fetchLessons
                 number: lesson.number
             });
         fetchLessons();
+        setHasChanged(false);
     }
 
     useEffect(() => {
@@ -49,15 +51,21 @@ export default function LessonEditor({lesson, setError, setLoading, fetchLessons
         <h2>{lessonTitle}</h2>
         <label className={"doule-row"}>
             Тема урока <input name={"title"}
-                              onChange={e => setLessonTitle(e.target.value)}
+                              onChange={e => {
+                                  setLessonTitle(e.target.value);
+                                  setHasChanged(true);
+                              }}
                               disabled={!lesson}
                               value={lessonTitle}/>
         </label>
         <label className={"doule-row"}>
             Ссылка на ВК видео
 
-            <input placeholder={'https://vk.com/video-227293370_456239078'}
-                   onChange={e => setVideoUrl(e.target.value)}/>
+            <input placeholder={'https://vk.com/video-...'}
+                   onChange={e => {
+                       setVideoUrl(e.target.value);
+                       setHasChanged(true);;
+                   }}/>
         </label>
         <details>
             <summary>Плеер</summary>
@@ -67,14 +75,17 @@ export default function LessonEditor({lesson, setError, setLoading, fetchLessons
             </label><br/>
             <label className={"doule-row"}>
                 Ссылка на плеер <input name={"video-url"}
-                                       onChange={e => setPlayerUrl(e.target.value)}
+                                       onChange={e => {
+                                           setPlayerUrl(e.target.value);
+                                           setHasChanged(true);
+                                       }}
                                        disabled={!manualPlayerUrl || !lesson}
                                        value={playerUrl}/>
             </label>
         </details>
 
 
-        <button onClick={e => save()} disabled={!lesson}>Сохранить</button>
+        <button onClick={e => save()} disabled={!lesson || !hasChanged}>Сохранить</button>
 
     </div>;
 }

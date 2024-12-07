@@ -11,7 +11,7 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
     const [courses, setCourses] = useState([] as Course[]);
     const [formData, setFormData] = useState({
         name: "",
-        cover_url: "",
+        coverUrl: "",
         id: 0,
     } as Course);
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +55,7 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
         else
             setFormData({
                 name: "",
-                cover_url: "",
+                coverUrl: "",
                 id: 0,
             });
     };
@@ -110,7 +110,7 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
             <input
                 type="text"
                 name="cover_url"
-                value={formData.cover_url}
+                value={formData.coverUrl}
                 onChange={handleInputChange}
                 disabled={!selectedCourse}
             />

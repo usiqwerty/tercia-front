@@ -27,9 +27,9 @@ function App() {
 
         let lesson = {
             title: "Новый урок",
-            video_url: "",
+            videoUrl: "",
             id: 0,
-            course_id: selectedCourse.id,
+            courseId: selectedCourse.id,
             number: lessons.length + 1
         };
         await createLesson(lesson);

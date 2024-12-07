@@ -1,4 +1,4 @@
-import {Course, getCourses, getLesson, Lesson, patchLesson} from "./api";
+import {Lesson, patchLesson} from "./api";
 import React, {useEffect, useState} from "react";
 
 export default function LessonEditor({lesson, setError, setLoading, fetchLessons}: {
@@ -14,7 +14,7 @@ export default function LessonEditor({lesson, setError, setLoading, fetchLessons
     const [hasChanged, setHasChanged] = useState(false);
     useEffect(() => {
         setLessonTitle(lesson?.title || "");
-        setPlayerUrl(lesson?.video_url || "");
+        setPlayerUrl(lesson?.videoUrl || "");
     }, [lesson]);
 
     function save() {
@@ -22,8 +22,8 @@ export default function LessonEditor({lesson, setError, setLoading, fetchLessons
             patchLesson({
                 id: lesson.id,
                 title: lessonTitle,
-                video_url: playerUrl,
-                course_id: lesson.course_id,
+                videoUrl: playerUrl,
+                courseId: lesson.courseId,
                 number: lesson.number
             });
         fetchLessons();
@@ -64,7 +64,7 @@ export default function LessonEditor({lesson, setError, setLoading, fetchLessons
             <input placeholder={'https://vk.com/video-...'}
                    onChange={e => {
                        setVideoUrl(e.target.value);
-                       setHasChanged(true);;
+                       setHasChanged(true);
                    }}/>
         </label>
         <details>

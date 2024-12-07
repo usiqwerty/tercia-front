@@ -3,14 +3,14 @@ import axios from "axios";
 
 export type Course = {
     name: string;
-    cover_url: string;
+    coverUrl: string;
     id: number;
 };
 export type Lesson = {
     title: string;
-    video_url: string;
+    videoUrl: string;
     id: number;
-    course_id: number;
+    courseId: number;
     number: number;
 };
 // Define API server address
@@ -61,7 +61,7 @@ export async function patchLesson(lesson: Lesson) {
 }
 export async function saveLessons(course_id: number, lessons: Lesson[]) {
     await axios.put(`${API_SERVER}/save-course-lessons`, lessons, {
-        params: {course_id: course_id},
+        params: {courseId: course_id},
         headers: {"Content-Type": "application/json"},
     });
 }

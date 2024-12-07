@@ -33,17 +33,20 @@ export default function LessonEditor({lesson, setError, setLoading, fetchLessons
     useEffect(() => {
         try {
             const url = new URL(videoUrl);
-            const video_id = url.pathname.split('-')[1];
-            const [oid, id] = video_id.split('_');
-            // https://vk.com/video_ext.php?oid=-227293370&id=456239078
-            const newPlayerUrl = new URL("https://vk.com/video_ext.php");
-            newPlayerUrl.searchParams.set("oid", "-" + oid);
-            newPlayerUrl.searchParams.set("id", id);
-            setPlayerUrl(newPlayerUrl.toString());
+            if (url.hostname === "vk.com" || url.hostname === "vkvideo.ru"){
+                const video_id = url.pathname.slice(6);
+                const [oid, id] = video_id.split('_');
+                const newPlayerUrl = new URL("https://vk.com/video_ext.php");
+                newPlayerUrl.searchParams.set("oid", oid);
+                newPlayerUrl.searchParams.set("id", id);
+                setPlayerUrl(newPlayerUrl.toString());
+            }
+            else{
+                setError("Не распознан формат сслыки");
+            }
         } catch {
             return
         }
-        //https://vk.com/video-227293370_456239078
 
     }, [videoUrl]);
 
@@ -61,7 +64,7 @@ export default function LessonEditor({lesson, setError, setLoading, fetchLessons
         <label className={"doule-row"}>
             Ссылка на ВК видео
 
-            <input placeholder={'https://vk.com/video-...'}
+            <input placeholder={'https://vk.com/video... или https://vkvideo.ru/video...'}
                    onChange={e => {
                        setVideoUrl(e.target.value);
                        setHasChanged(true);

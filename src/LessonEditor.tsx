@@ -1,11 +1,12 @@
 import {Lesson, patchLesson} from "./api";
 import React, {useEffect, useState} from "react";
 
-export default function LessonEditor({lesson, setError, setLoading, fetchLessons}: {
+export default function LessonEditor({lesson, setError, setLoading, fetchLessons, error}: {
     lesson: Lesson | null,
     setError: (a: string | null) => void,
     setLoading: (a: boolean) => void,
-    fetchLessons: () => void
+    fetchLessons: () => void,
+    error: string | null,
 }) {
     const [lessonTitle, setLessonTitle] = useState("");
     const [playerUrl, setPlayerUrl] = useState("");
@@ -31,6 +32,10 @@ export default function LessonEditor({lesson, setError, setLoading, fetchLessons
     }
 
     useEffect(() => {
+        if (videoUrl === "") {
+            setError(null);
+            return;
+        }
         try {
             const url = new URL(videoUrl);
             if (url.hostname === "vk.com" || url.hostname === "vkvideo.ru"){
@@ -40,12 +45,13 @@ export default function LessonEditor({lesson, setError, setLoading, fetchLessons
                 newPlayerUrl.searchParams.set("oid", oid);
                 newPlayerUrl.searchParams.set("id", id);
                 setPlayerUrl(newPlayerUrl.toString());
+                setError(null);
             }
             else{
                 setError("Не распознан формат сслыки");
             }
-        } catch {
-            return
+        } catch (e) {
+            setError("Не распознан формат сслыки");
         }
 
     }, [videoUrl]);
@@ -88,7 +94,7 @@ export default function LessonEditor({lesson, setError, setLoading, fetchLessons
         </details>
 
 
-        <button onClick={e => save()} disabled={!lesson || !hasChanged}>Сохранить</button>
+        <button onClick={e => save()} disabled={!lesson || !hasChanged || error!=null}>Сохранить</button>
 
     </div>;
 }

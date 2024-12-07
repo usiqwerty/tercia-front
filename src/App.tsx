@@ -55,7 +55,8 @@ function App() {
                 <LessonEditor lesson={selectedLesson}
                               setError={setError}
                               setLoading={setLoading}
-                              fetchLessons={fetchLessons}/>
+                              fetchLessons={fetchLessons}
+                              error={error}/>
             </div>
         </>
 

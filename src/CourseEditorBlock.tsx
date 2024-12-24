@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Course, getCourses, patchCourses} from "./api";
-import {CourseSelector} from "./CourseSelector";
+import {CourseSelector} from "./widgets/CourseSelector";
 
-export default function CourseEditor(props: {
+export default function CourseEditorBlock(props: {
     selectedCourse: Course | null,
     setLoading: (a: boolean) => void,
     setError: (a: string | null) => void,

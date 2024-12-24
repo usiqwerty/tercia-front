@@ -1,4 +1,4 @@
-import {Course, createCourse, deleteCourse} from "./api";
+import {Course, createCourse, deleteCourse} from "../api";
 import React from "react";
 
 export function CourseSelector(props: {

@@ -1,7 +1,7 @@
 import {Lesson, patchLesson} from "./api";
 import React, {useEffect, useState} from "react";
 
-export default function LessonEditor({lesson, setError, setLoading, fetchLessons, error}: {
+export default function LessonEditorBlock({lesson, setError, setLoading, fetchLessons, error}: {
     lesson: Lesson | null,
     setError: (a: string | null) => void,
     setLoading: (a: boolean) => void,

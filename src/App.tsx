@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {Course, createLesson, getCourseLessons, getCourses, getLesson, Lesson, patchCourses} from "./api";
-import CourseEditor from "./CourseEditor";
-import LessonEditor from "./LessonEditor";
+import CourseEditorBlock from "./CourseEditorBlock";
+import LessonEditorBlock from "./LessonEditorBlock";
 import "./App.css";
-import LessonList from "./LessonList";
+import LessonListBlock from "./LessonListBlock";
 
 function App() {
     const [selectedCourse, setSelectedCourse] = useState(null as Course | null);
@@ -42,21 +42,21 @@ function App() {
             {error && <p style={{color: "red"}}>{error}</p>}
             {loading && <p>Загрузка...</p>}
             <div id={'editor-container'}>
-                <CourseEditor selectedCourse={selectedCourse}
-                              setError={setError}
-                              setLoading={setLoading}
-                              setSelectedCourse={setSelectedCourse}/>
-                <LessonList lessons={lessons}
-                            selectedLesson={selectedLesson}
-                            selectLesson={async id => setSelectedLesson((await getLesson(id)).data)}
-                            onCreateLesson={onCreateLesson}
-                            setLessons={setLessons}
-                            courseId={selectedCourse?.id || null}/>
-                <LessonEditor lesson={selectedLesson}
-                              setError={setError}
-                              setLoading={setLoading}
-                              fetchLessons={fetchLessons}
-                              error={error}/>
+                <CourseEditorBlock selectedCourse={selectedCourse}
+                                   setError={setError}
+                                   setLoading={setLoading}
+                                   setSelectedCourse={setSelectedCourse}/>
+                <LessonListBlock lessons={lessons}
+                                 selectedLesson={selectedLesson}
+                                 selectLesson={async id => setSelectedLesson((await getLesson(id)).data)}
+                                 onCreateLesson={onCreateLesson}
+                                 setLessons={setLessons}
+                                 courseId={selectedCourse?.id || null}/>
+                <LessonEditorBlock lesson={selectedLesson}
+                                   setError={setError}
+                                   setLoading={setLoading}
+                                   fetchLessons={fetchLessons}
+                                   error={error}/>
             </div>
         </>
 

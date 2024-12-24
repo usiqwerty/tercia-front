@@ -1,7 +1,7 @@
 import {Lesson, saveLessons} from "./api";
 import React, {useState} from "react";
 
-export default function LessonList({lessons, selectLesson, selectedLesson, onCreateLesson, setLessons, courseId}: {
+export default function LessonListBlock({lessons, selectLesson, selectedLesson, onCreateLesson, setLessons, courseId}: {
     lessons: Lesson[],
     selectLesson: (a: number) => void,
     selectedLesson: Lesson | null,

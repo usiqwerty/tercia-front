@@ -1,93 +1,69 @@
 import React, {useEffect, useState} from "react";
-import {Course, createCourse, createLesson, deleteCourse, getCourses, patchCourses} from "./api";
+import {Course, getCourses, patchCourses} from "./api";
+import {CourseSelector} from "./CourseSelector";
 
-export default function CourseEditor({selectedCourse, setLoading, setError, setSelectedCourse}:
-                                         {
-                                             selectedCourse: Course | null,
-                                             setLoading: (a: boolean) => void,
-                                             setError: (a: string | null) => void,
-                                             setSelectedCourse: (a: Course | null) => void
-                                         }) {
+export default function CourseEditor(props: {
+    selectedCourse: Course | null,
+    setLoading: (a: boolean) => void,
+    setError: (a: string | null) => void,
+    setSelectedCourse: (a: Course | null) => void
+}) {
     const [courses, setCourses] = useState([] as Course[]);
     const [courseName, setCourseName] = useState("");
     const [coverUrl, setCoverUrl] = useState("");
-    const [courseId, setCourseId    ] = useState(0);
+    const [courseId, setCourseId] = useState(0);
 
-    const fetchCourses = async () => {
+    const refreshCourseList = async () => {
         try {
-            setLoading(true);
-            setError(null);
+            props.setLoading(true);
+            props.setError(null);
             setCourses((await getCourses()).data);
         } catch (err) {
-            setError("Не удалось загрузить курсы");
+            props.setError("Не удалось загрузить курсы");
         } finally {
-            setLoading(false);
+            props.setLoading(false);
         }
     };
     useEffect(() => {
-        fetchCourses();
+        refreshCourseList();
     }, []);
 
     const handleSave = async () => {
-        if (!courseId || !selectedCourse) return;
+        if (!courseId || !props.selectedCourse) return;
         try {
-            setLoading(true);
-            setError(null);
+            props.setLoading(true);
+            props.setError(null);
             await patchCourses({name: courseName, coverUrl: coverUrl, id: courseId});
             alert("Информация сохранена");
-            await fetchCourses();
+            await refreshCourseList();
         } catch (err) {
-            setError("Не удалось сохранить информацию " + err);
+            props.setError("Не удалось сохранить информацию " + err);
         } finally {
-            setLoading(false);
+            props.setLoading(false);
         }
     };
     const handleCourseSelected = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedId = Number(e.target.value);
         const course = courses.find((c) => c.id === selectedId) || null;
-        setSelectedCourse(course);
-        if (course){
+        props.setSelectedCourse(course);
+        if (course) {
             setCourseName(course.name);
             setCourseId(course.id);
             setCoverUrl(course.coverUrl)
-        }
-        else {
+        } else {
             setCourseName("");
             setCourseId(0);
             setCoverUrl("")
         }
     };
 
-    async function onCreateCourse(e: React.MouseEvent) {
-        await createCourse();
-        await fetchCourses();
-        setSelectedCourse(null);
-    }
-    async function onDeleteCourse(e: React.MouseEvent){
-        if (selectedCourse == null)
-            return;
-        await deleteCourse(selectedCourse.id);
-        await fetchCourses();
-        setSelectedCourse(null);
-    }
-
     return <div className={"editor-block"} id={"course-editor"}>
         <h2>Информация о курсе</h2>
-        <div>
-            <button onClick={onCreateCourse}>Создать курс</button>
-            <button onClick={onDeleteCourse} disabled={!selectedCourse}>Удалить курс</button>
-        </div>
-        <select onChange={handleCourseSelected}
-                value={selectedCourse?.id || ""}>
-            <option value="" disabled>
-                Выберите курс...
-            </option>
-            {courses.map((course) => (
-                <option key={course.id} value={course.id}>
-                    {course.name}
-                </option>
-            ))}
-        </select>
+        <CourseSelector selectedCourse={props.selectedCourse}
+                        onSelect={handleCourseSelected}
+                        courses={courses}
+                        setSelectedCourse={props.setSelectedCourse}
+                        fetchCourses={refreshCourseList}/>
 
 
         <label className={"doule-row"}>
@@ -97,8 +73,8 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
                 type="text"
                 name="name"
                 value={courseName}
-                onChange={e=>setCourseName(e.target.value)}
-                disabled={!selectedCourse}
+                onChange={e => setCourseName(e.target.value)}
+                disabled={!props.selectedCourse}
             />
         </label>
 
@@ -109,11 +85,11 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
                 type="text"
                 name="cover_url"
                 value={coverUrl}
-                onChange={e=>setCoverUrl(e.target.value)}
-                disabled={!selectedCourse}
+                onChange={e => setCoverUrl(e.target.value)}
+                disabled={!props.selectedCourse}
             />
         </label>
-        <button disabled={!selectedCourse} onClick={(e) => handleSave()}>
+        <button disabled={!props.selectedCourse} onClick={(e) => handleSave()}>
             Сохранить
         </button>
     </div>;

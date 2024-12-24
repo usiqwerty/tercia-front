@@ -9,15 +9,10 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
                                              setSelectedCourse: (a: Course | null) => void
                                          }) {
     const [courses, setCourses] = useState([] as Course[]);
-    const [formData, setFormData] = useState({
-        name: "",
-        coverUrl: "",
-        id: 0,
-    } as Course);
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        setFormData({...formData, [name]: value});
-    };
+    const [courseName, setCourseName] = useState("");
+    const [coverUrl, setCoverUrl] = useState("");
+    const [courseId, setCourseId    ] = useState(0);
+
     const fetchCourses = async () => {
         try {
             setLoading(true);
@@ -34,13 +29,13 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
     }, []);
 
     const handleSave = async () => {
-        if (!formData || !selectedCourse) return;
+        if (!courseId || !selectedCourse) return;
         try {
             setLoading(true);
             setError(null);
-            await patchCourses(formData);
+            await patchCourses({name: courseName, coverUrl: coverUrl, id: courseId});
             alert("Информация сохранена");
-            fetchCourses();
+            await fetchCourses();
         } catch (err) {
             setError("Не удалось сохранить информацию " + err);
         } finally {
@@ -51,13 +46,16 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
         const selectedId = Number(e.target.value);
         const course = courses.find((c) => c.id === selectedId) || null;
         setSelectedCourse(course);
-        if (course) setFormData(course);
-        else
-            setFormData({
-                name: "",
-                coverUrl: "",
-                id: 0,
-            });
+        if (course){
+            setCourseName(course.name);
+            setCourseId(course.id);
+            setCoverUrl(course.coverUrl)
+        }
+        else {
+            setCourseName("");
+            setCourseId(0);
+            setCoverUrl("")
+        }
     };
 
     async function onCreateCourse(e: React.MouseEvent) {
@@ -98,8 +96,8 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
             <input
                 type="text"
                 name="name"
-                value={formData.name}
-                onChange={handleInputChange}
+                value={courseName}
+                onChange={e=>setCourseName(e.target.value)}
                 disabled={!selectedCourse}
             />
         </label>
@@ -110,8 +108,8 @@ export default function CourseEditor({selectedCourse, setLoading, setError, setS
             <input
                 type="text"
                 name="cover_url"
-                value={formData.coverUrl}
-                onChange={handleInputChange}
+                value={coverUrl}
+                onChange={e=>setCoverUrl(e.target.value)}
                 disabled={!selectedCourse}
             />
         </label>
